@@ -8,11 +8,11 @@ from utils.utils import *
 
 
 class WGANProcess():
-    def __init__(self, args, scaled_real_data: pd.DataFrame):
+    def __init__(self, args, scaled_real_data: pd.DataFrame, features_units_for_softmax: list = None):
         self.args = args
         self.scaled_real_data = scaled_real_data
         self.features_dim = self.scaled_real_data.shape[1]
-        self.generator = Generator(self.features_dim, self.args)
+        self.generator = Generator(self.features_dim, self.args, features_units_for_softmax)
         self.critic = Critic(self.features_dim, self.args)
 
         # Additional WGAN params
@@ -59,7 +59,8 @@ class WGANProcess():
 
         fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, self.scaled_real_data.shape))).detach().cpu().numpy()
         fake_data = pd.DataFrame(fake_data, columns=self.scaled_real_data.columns)
-        visualize_results(real_data=self.scaled_real_data, fake_data=fake_data)
+        # visualize_results(real_data=self.scaled_real_data, fake_data=fake_data)
+        return fake_data
 
     def train_critic(self, critic_optim, real_data):
         fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, self.scaled_real_data.shape)))

@@ -3,6 +3,8 @@ import torch
 from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+
 
 def save_model(discriminator, generator, args):
     model_path = os.path.join(os.getcwd(), 'save_model')
@@ -51,3 +53,10 @@ def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):
         plt.savefig(os.path.join(images_path, name + '_distribution.png'))
         # plt.show()
         plt.clf()
+
+
+def softmax2onehot(m: np.ndarray):
+    a = np.argmax(m, axis=1)
+    b = np.zeros(m.shape)
+    b[np.arange(a.size), a]=1
+    return b

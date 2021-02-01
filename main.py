@@ -3,7 +3,6 @@ import argparse
 from model.gan.process import GANProcess
 from model.wgan.process import WGANProcess
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.datasets import make_regression
 from utils.data_transformer import DataTransformer
 from utils.utils import visualize_results

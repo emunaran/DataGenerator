@@ -59,7 +59,6 @@ class WGANProcess():
 
         fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, self.scaled_real_data.shape))).detach().cpu().numpy()
         fake_data = pd.DataFrame(fake_data, columns=self.scaled_real_data.columns)
-        # visualize_results(real_data=self.scaled_real_data, fake_data=fake_data)
         return fake_data
 
     def train_critic(self, critic_optim, real_data):

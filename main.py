@@ -1,6 +1,7 @@
 
 import argparse
 from model.gan.process import GANProcess
+from model.wgan.process import WGANProcess
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.datasets import make_regression
@@ -17,11 +18,11 @@ def main():
     parser.add_argument('--data-set', type=str, default='simulated', required=False)
     parser.add_argument('--hidden-size', type=int, default=256, required=False)
     parser.add_argument('--epochs', type=int, default=500, required=False)
-    parser.add_argument('--min-epochs', type=int, default=20, required=False)
     parser.add_argument('--learning-rate', type=int, default=0.0001, required=False)
     parser.add_argument('--batch-size', type=int, default=64, required=False)
-    parser.add_argument('--discrim-update-num', type=int, default=2, required=False)
+    parser.add_argument('--discrim-update-num', type=int, default=1, required=False)
     parser.add_argument('--generator-update-num', type=int, default=1, required=False)
+    parser.add_argument('--critic-update-num', type=int, default=5, required=False)
     parser.add_argument('--discriminator-error-threshold', type=float, default=0.95, required=False)
     parser.add_argument('--generator-success-threshold', type=float, default=0.95, required=False)
     parser.add_argument('--load-model', type=str, required=False)
@@ -48,7 +49,7 @@ def main():
     if args.algorithm == 'GAN':
         process = GANProcess(args, processed_df)
     else:
-        pass
+        process = WGANProcess(args, processed_df)
 
     process.run()
 

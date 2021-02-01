@@ -25,13 +25,13 @@ class GANProcess():
         data_loader = DataLoader(self.scaled_real_data.values, batch_size=self.args.batch_size, shuffle=True)
 
         if self.args.load_model is not None:
-            load_model(args=self.args, discriminator=self.discriminator, generator=self.generator)
+            load_model(args=self.args, discriminator_critic=self.discriminator, generator=self.generator)
 
         if self.args.train:
             writer = SummaryWriter(self.args.logdir)
 
-            discriminator_error_list = []
-            generator_success_list = []
+            discrim_loss_list = []
+            generator_loss_list = []
 
             for epoch in range(self.args.epochs):
                 if (epoch % 100 == 0):
@@ -42,17 +42,15 @@ class GANProcess():
                     if torch.cuda.is_available():
                         real_data = real_data.cuda()
 
-                    discriminator_error, _ = self.train_discrim(discriminator_optim, real_data)
-                    generator_success = self.train_generator(generator_optim, real_data)
+                    _, _, discrim_loss = self.train_discrim(discriminator_optim, real_data)
+                    _, generator_loss = self.train_generator(generator_optim, real_data)
 
-                    discriminator_error_list.append(discriminator_error)
-                    generator_success_list.append(generator_success)
+                    discrim_loss_list.append(discrim_loss)
+                    generator_loss_list.append(generator_loss)
 
-                print(f'discriminator_error: {np.mean(discriminator_error_list)}, generator_success: {np.mean(generator_success_list)}')
-                writer.add_scalar('log/discriminator_error', float(np.mean(discriminator_error_list)), epoch)
-                writer.add_scalar('log/generator_success', float(np.mean(generator_success_list)), epoch)
-                if np.mean(discriminator_error_list) > self.args.discriminator_error_threshold and np.mean(generator_success_list) > self.args.generator_success_threshold and epoch > self.args.min_epochs:
-                    break
+                print(f'critic_loss: {np.mean(discrim_loss_list)}, generator_loss: {np.mean(generator_loss_list)}')
+                writer.add_scalar('log/critic_loss', float(np.mean(discrim_loss_list)), epoch)
+                writer.add_scalar('log/generator_loss', float(np.mean(generator_loss_list)), epoch)
 
             save_model(self.discriminator, self.generator, self.args)
 
@@ -81,7 +79,7 @@ class GANProcess():
         discriminator_error = ((self.discriminator(real_data) < 0.5).float()).mean()
         generator_success = ((self.discriminator(fake_data) > 0.5).float()).mean()
 
-        return discriminator_error, generator_success
+        return discriminator_error, generator_success, discrim_loss.detach().cpu().numpy()
 
     def train_generator(self, generator_optim, real_data):
         noise = torch.Tensor(np.random.uniform(-1, 1, real_data.shape))
@@ -104,4 +102,4 @@ class GANProcess():
 
         generator_success = ((self.discriminator(fake_data) > 0.5).float()).mean()
 
-        return generator_success
+        return generator_success, generator_loss.detach().cpu().numpy()

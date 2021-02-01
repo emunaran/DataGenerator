@@ -22,11 +22,11 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)
 
 
-def load_model(args, discriminator, generator):
+def load_model(args, discriminator_critic, generator):
     saved_checkpoint_path = os.path.join(os.getcwd(), 'save_model', str(args.load_model))
     checkpoint = torch.load(saved_checkpoint_path)
 
-    dis = discriminator.load_state_dict(checkpoint['discriminator'])
+    dis = discriminator_critic.load_state_dict(checkpoint['discriminator'])
     gen = generator.load_state_dict(checkpoint['generator'])
     return dis, gen, checkpoint['args']
 

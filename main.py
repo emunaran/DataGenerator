@@ -1,12 +1,13 @@
 
 import argparse
 from model.gan.process import GANProcess
+from model.wgan.process import WGANProcess
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.datasets import make_regression
 from utils.data_transformer import DataTransformer
+from utils.utils import visualize_results
 
-ALGORITHM_TYPE=['GAN', 'WGAN']
+ALGORITHM_TYPE = ['GAN', 'WGAN']
 CATEGORICAL_FEATURES = ['Outcome']
 
 
@@ -17,11 +18,11 @@ def main():
     parser.add_argument('--data-set', type=str, default='simulated', required=False)
     parser.add_argument('--hidden-size', type=int, default=256, required=False)
     parser.add_argument('--epochs', type=int, default=500, required=False)
-    parser.add_argument('--min-epochs', type=int, default=20, required=False)
     parser.add_argument('--learning-rate', type=int, default=0.0001, required=False)
     parser.add_argument('--batch-size', type=int, default=64, required=False)
     parser.add_argument('--discrim-update-num', type=int, default=2, required=False)
     parser.add_argument('--generator-update-num', type=int, default=1, required=False)
+    parser.add_argument('--critic-update-num', type=int, default=5, required=False)
     parser.add_argument('--discriminator-error-threshold', type=float, default=0.95, required=False)
     parser.add_argument('--generator-success-threshold', type=float, default=0.95, required=False)
     parser.add_argument('--load-model', type=str, required=False)
@@ -42,16 +43,18 @@ def main():
             if cat_feature not in df.columns:
                 raise Exception(f'{cat_feature} is not exist in the given data')
 
-    data_transformer = DataTransformer(CATEGORICAL_FEATURES)
+    data_transformer = DataTransformer(categorical_features=CATEGORICAL_FEATURES)
     processed_df = data_transformer.transform(df)
 
     if args.algorithm == 'GAN':
         process = GANProcess(args, processed_df)
     else:
-        pass
+        process = WGANProcess(args, processed_df, list(data_transformer.features_categories_lens))
 
-    process.run()
+    fake_data = process.run()
 
+    original_scale_data = data_transformer.inverse_transform(fake_data)
+    visualize_results(real_data=df, fake_data=original_scale_data)
 
 if __name__ == '__main__':
     main()

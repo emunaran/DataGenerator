@@ -3,6 +3,8 @@ import torch
 from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+
 
 def save_model(discriminator, generator, args):
     model_path = os.path.join(os.getcwd(), 'save_model')
@@ -22,11 +24,11 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)
 
 
-def load_model(args, discriminator, generator):
+def load_model(args, discriminator_critic, generator):
     saved_checkpoint_path = os.path.join(os.getcwd(), 'save_model', str(args.load_model))
     checkpoint = torch.load(saved_checkpoint_path)
 
-    dis = discriminator.load_state_dict(checkpoint['discriminator'])
+    dis = discriminator_critic.load_state_dict(checkpoint['discriminator'])
     gen = generator.load_state_dict(checkpoint['generator'])
     return dis, gen, checkpoint['args']
 
@@ -51,3 +53,10 @@ def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):
         plt.savefig(os.path.join(images_path, name + '_distribution.png'))
         # plt.show()
         plt.clf()
+
+
+def softmax2onehot(m: np.ndarray):
+    a = np.argmax(m, axis=1)
+    b = np.zeros(m.shape)
+    b[np.arange(a.size), a]=1
+    return b

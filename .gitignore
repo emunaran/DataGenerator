@@ -1,0 +1,7 @@
+/data
+/save_model
+.idea/
+__pycache__/
+/images
+/logs
+/venv

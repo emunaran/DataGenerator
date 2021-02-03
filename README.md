@@ -21,21 +21,27 @@ Here we will use as an example the popular dataset "diabetes" downloaded from Ka
 #### Running GAN model
 
 ```
---algorithm GAN --data-set data/diabetes_dataset/diabetes.csv --epochs 100
+--algorithm GAN --data-set data/diabetes_dataset/diabetes.csv --epochs 500
 ```
 
 #### Running WGAN model
 
 ```
---algorithm WGAN --data-set data/diabetes_dataset/diabetes.csv --epochs 100
+--algorithm WGAN --data-set data/diabetes_dataset/diabetes.csv --epochs 200
 ```
 
 ## Results and further discussions
 
 As mentioned above, WGAN manages to handle categorical variables where GAN is not originally designed for - and suffers from what's called ["Mode Collapse"](https://developers.google.com/machine-learning/gan/problems#mode-collapse). In the following histograms we can see both algorithm performance where the WGAN succeded to reproduce the categorical feature "Outcome", where the simple GAN fails.
 
-### GAN results
-
-
-### WGAN results
+GAN                        |  WGAN
+:-------------------------:|:-------------------------:
+![](./images/GAN/Age_distribution.png)                      |  ![](./images/WGAN/Age_distribution.png)
+![](./images/GAN/BMI_distribution.png)                      |  ![](./images/WGAN/BMI_distribution.png)
+![](./images/GAN/BloodPressure_distribution.png)            |  ![](./images/WGAN/BloodPressure_distribution.png)
+![](./images/GAN/DiabetesPedigreeFunction_distribution.png) |  ![](./images/WGAN/DiabetesPedigreeFunction_distribution.png)
+![](./images/GAN/Glucose_distribution.png)                  |  ![](./images/WGAN/Glucose_distribution.png)
+![](./images/GAN/Insulin_distribution.png)                  |  ![](./images/WGAN/Insulin_distribution.png)
+![](./images/GAN/SkinThickness_distribution.png)            |  ![](./images/WGAN/SkinThickness_distribution.png)
+![](./images/GAN/Outcome_distribution.png)                  |  ![](./images/WGAN/Outcome_distribution.png)
 

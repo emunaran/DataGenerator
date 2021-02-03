@@ -25,7 +25,7 @@ class GANProcess():
         data_loader = DataLoader(self.scaled_real_data.values, batch_size=self.args.batch_size, shuffle=True)
 
         if self.args.load_model is not None:
-            load_model(args=self.args, discriminator_critic=self.discriminator, generator=self.generator)
+            self.args, self.discriminator, self.generator = load_model(args=self.args, discriminator_critic=self.discriminator, generator=self.generator)
 
         if self.args.train:
             writer = SummaryWriter(self.args.logdir)

@@ -11,7 +11,7 @@ def save_model(discriminator_critic, generator, args):
     if not os.path.isdir(model_path):
         os.makedirs(model_path)
 
-    checkpoint_path = os.path.join(model_path, 'checkpoint_' + '.pth')
+    checkpoint_path = os.path.join(model_path, f'{args.algorithm}_checkpoint_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.pth')
 
     save_checkpoint({
         'discriminator_critic': discriminator_critic.state_dict(),
@@ -24,13 +24,13 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)
 
 
-def load_model(args, discriminator_critic_arc, generator_arc):
+def load_model(args, discriminator_critic, generator):
     saved_checkpoint_path = os.path.join(os.getcwd(), 'save_model', str(args.load_model))
     checkpoint = torch.load(saved_checkpoint_path)
 
-    discriminator_critic = discriminator_critic_arc.load_state_dict(checkpoint['discriminator_critic'])
-    generator = generator_arc.load_state_dict(checkpoint['generator'])
-    return discriminator_critic, generator, checkpoint['args']
+    discriminator_critic.load_state_dict(checkpoint['discriminator_critic'])
+    generator.load_state_dict(checkpoint['generator'])
+    return checkpoint['args'], discriminator_critic, generator
 
 
 def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):

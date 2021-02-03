@@ -28,7 +28,7 @@ class WGANProcess():
         data_loader = DataLoader(self.scaled_real_data.values, batch_size=self.args.batch_size, shuffle=True)
 
         if self.args.load_model is not None:
-            load_model(args=self.args, discriminator_critic=self.critic, generator=self.generator)
+            self.args, self.critic, self.generator = load_model(args=self.args, discriminator_critic=self.critic, generator=self.generator)
 
         if self.args.train:
             writer = SummaryWriter(self.args.logdir)

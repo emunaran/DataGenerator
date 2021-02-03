@@ -53,5 +53,5 @@ class Critic(nn.Module):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         x = torch.relu(self.fc3(x))
-        out = torch.tanh(self.fc4(x))
+        out = self.fc4(x)
         return out

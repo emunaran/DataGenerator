@@ -30,7 +30,11 @@ def load_model(args, discriminator_critic, generator):
 
     discriminator_critic.load_state_dict(checkpoint['discriminator_critic'])
     generator.load_state_dict(checkpoint['generator'])
-    return checkpoint['args'], discriminator_critic, generator
+
+    saved_args = checkpoint['args']
+    saved_args.train = args.train
+
+    return saved_args, discriminator_critic, generator
 
 
 def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):

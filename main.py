@@ -54,7 +54,7 @@ def main():
     fake_data = process.run()
 
     original_scale_data = data_transformer.inverse_transform(fake_data)
-    visualize_results(real_data=df, fake_data=original_scale_data)
+    visualize_results(real_data=df, fake_data=original_scale_data, algorithm=args.algorithm)
 
 if __name__ == '__main__':
     main()

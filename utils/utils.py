@@ -37,11 +37,15 @@ def load_model(args, discriminator_critic, generator):
     return saved_args, discriminator_critic, generator
 
 
-def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):
+def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame, algorithm: str):
 
     images_path = os.path.join(os.getcwd(), 'images')
     if not os.path.isdir(images_path):
         os.makedirs(images_path)
+
+    images_alg_path = os.path.join(os.getcwd(), f'images/{algorithm}')
+    if not os.path.isdir(images_alg_path):
+        os.makedirs(images_alg_path)
 
     for name in real_data.columns:
         plt.xlabel('Values')
@@ -54,7 +58,7 @@ def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):
         plt.hist(common_dist, 50, density=True, alpha=0.6, label='real')
         plt.hist(fraud_dist, 50, density=True, alpha=0.6, facecolor='r', label='fake')
         plt.legend()
-        plt.savefig(os.path.join(images_path, name + '_distribution.png'))
+        plt.savefig(os.path.join(images_alg_path, name + '_distribution.png'))
         # plt.show()
         plt.clf()
 

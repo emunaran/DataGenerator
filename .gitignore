@@ -1,8 +1,8 @@
 .DS_Store
-/data
+#/data
 /save_model
 .idea/
 __pycache__/
-/images
+#/images
 /logs
 /venv

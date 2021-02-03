@@ -62,13 +62,13 @@ class WGANProcess():
         return fake_data
 
     def train_critic(self, critic_optim, real_data):
-        fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, self.scaled_real_data.shape)))
+        fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, real_data.shape)))
         fake_data = torch.Tensor(fake_data)
 
         for _ in range(self.args.critic_update_num):
-            critic_output_fake = self.critic(fake_data)
+            critic_output_fake = self.critic.forward(fake_data)
             real_data = torch.Tensor(real_data)
-            critic_output_real = self.critic(real_data)
+            critic_output_real = self.critic.forward(real_data)
 
             critic_loss = -(torch.mean(critic_output_real) - torch.mean(critic_output_fake))
 
@@ -88,7 +88,7 @@ class WGANProcess():
 
             fake_data = self.generator.forward(noise)
             fake_data = torch.Tensor(fake_data)
-            critic_output_fake = self.critic(fake_data)
+            critic_output_fake = self.critic.forward(fake_data)
 
             generator_loss = -torch.mean(critic_output_fake)
 

@@ -59,7 +59,7 @@ class GANProcess():
         return fake_data
 
     def train_discrim(self, discriminator_optim, real_data):
-        fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, self.scaled_real_data.shape)))
+        fake_data = self.generator.forward(torch.Tensor(np.random.uniform(-1, 1, real_data.shape)))
         fake_data = torch.Tensor(fake_data)
 
         criterion = torch.nn.BCELoss()

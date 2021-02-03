@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Running example
 
-Here we will use as an example the popular dataset "diabetes" downloaded from Kaggle. Run the following configuration via terminal or the IDE configuration:
+Here we will use as an example the popular dataset "diabetes" downloaded from Kaggle. Run the main.py file with the following configuration via terminal or the IDE configuration:
 
 #### Running GAN model
 

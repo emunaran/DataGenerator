@@ -6,15 +6,15 @@ import pandas as pd
 import numpy as np
 
 
-def save_model(discriminator, generator, args):
+def save_model(discriminator_critic, generator, args):
     model_path = os.path.join(os.getcwd(), 'save_model')
     if not os.path.isdir(model_path):
         os.makedirs(model_path)
 
-    checkpoint_path = os.path.join(model_path, 'checkpoint_' + '.pth.tar')
+    checkpoint_path = os.path.join(model_path, 'checkpoint_' + '.pth')
 
     save_checkpoint({
-        'discriminator': discriminator.state_dict(),
+        'discriminator_critic': discriminator_critic.state_dict(),
         'generator': generator.state_dict(),
         'args': args,
     }, filename=checkpoint_path)
@@ -24,13 +24,13 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)
 
 
-def load_model(args, discriminator_critic, generator):
+def load_model(args, discriminator_critic_arc, generator_arc):
     saved_checkpoint_path = os.path.join(os.getcwd(), 'save_model', str(args.load_model))
     checkpoint = torch.load(saved_checkpoint_path)
 
-    dis = discriminator_critic.load_state_dict(checkpoint['discriminator'])
-    gen = generator.load_state_dict(checkpoint['generator'])
-    return dis, gen, checkpoint['args']
+    discriminator_critic = discriminator_critic_arc.load_state_dict(checkpoint['discriminator_critic'])
+    generator = generator_arc.load_state_dict(checkpoint['generator'])
+    return discriminator_critic, generator, checkpoint['args']
 
 
 def visualize_results(real_data: pd.DataFrame, fake_data: pd.DataFrame):

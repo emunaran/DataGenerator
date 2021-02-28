@@ -1,6 +1,6 @@
 # Tabular data generation using Generative Adversarial Networks (GANs) and Wasserstein GANs (WGANs)
 
-GANs and WGANs are two types of state-of-the-art algorithms to generate data from scratch. Generating data allows us, to some extend, training machine learning (ML) models results in better performance when suffering from a lack of original data. While GANs are widely used for images data, here we'll utilize GANs power to handle tabular data. This project aims to provide a clear and simple implementation (Pytorch) to GANs and WGANs. The former presents the basic idea that presented in the paper ["Generative adversarial networks"](https://arxiv.org/abs/1406.2661) (Goodfellow et al., 2014). The latter, ["Wasserstein generative adversarial networks"](http://proceedings.mlr.press/v70/arjovsky17a/arjovsky17a.pdf) (Arjovsky et al., 2017), stands as an extension of the GAN while demonstrating better training stability, less sensitivity for hyperparameters and model architecture, and handle categorical data (in our case).  
+GANs and WGANs are two types of state-of-the-art algorithms to generate data from scratch. Generating data allows us, to some extend, training machine learning (ML) models results in better performance when suffering from a lack of original data. While GANs are widely used for images data, here we'll utilize GANs power to handle tabular data. This project aims to provide a clear and simple implementation (Pytorch) to GANs and WGANs. The former presents the basic idea that presented in the paper ["Generative adversarial networks"](https://arxiv.org/abs/1406.2661) (Goodfellow et al., 2014). The latter, ["Wasserstein generative adversarial networks"](http://proceedings.mlr.press/v70/arjovsky17a/arjovsky17a.pdf) (Arjovsky et al., 2017), stands as an extension of the GAN while demonstrating better training stability, less sensitivity for hyperparameters and model architecture, and handle categorical data (as in our case). As an example, we will use the ["Pima Indians Diabetes Database"](https://www.kaggle.com/uciml/pima-indians-diabetes-database) collected from Kaggle. 
 
 ## Getting Started
 
@@ -18,16 +18,16 @@ pip install -r requirements.txt
 
 Here we will use as an example the popular dataset "diabetes" downloaded from Kaggle. Run the main.py file with the following configuration via terminal or the IDE configuration:
 
-#### Running GAN model
+#### Running the GAN model
 
 ```
---algorithm GAN --data-set data/diabetes_dataset/diabetes.csv --epochs 500
+--algorithm GAN --data-set data/diabetes_dataset/diabetes.csv --epochs 500 --train
 ```
 
-#### Running WGAN model
+#### Running the WGAN model
 
 ```
---algorithm WGAN --data-set data/diabetes_dataset/diabetes.csv --epochs 200
+--algorithm WGAN --data-set data/diabetes_dataset/diabetes.csv --epochs 200 --train
 ```
 
 ## Results and further discussions
